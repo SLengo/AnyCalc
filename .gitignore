@@ -1,0 +1,17 @@
+bin
+obj
+packages
+.cov
+.svn
+*.tmp_proj
+.suo
+.csproj.user
+*.pdb
+*.iobj
+*.ipdb
+.vs/
+*.suo
+*.user
+*.msi
+*.exe
+*.exp

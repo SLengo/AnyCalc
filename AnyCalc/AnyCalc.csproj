@@ -85,7 +85,7 @@
       <DependentUpon>RomeCalcView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Calcs\Rome\View\RomeCalcVM.cs" />
-    <Compile Include="Common\CalcMath\CalcsStorage.cs" />
+    <Compile Include="Common\CalcsStorage.cs" />
     <Compile Include="Common\CalcMath\Calculator.cs" />
     <Compile Include="Common\CalcMath\ICalc.cs" />
     <Compile Include="Common\RelayCommand.cs" />

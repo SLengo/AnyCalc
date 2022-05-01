@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnyCalc.Common.CalcMath
+namespace AnyCalc.Common
 {
     public class CalcsStorage
     {

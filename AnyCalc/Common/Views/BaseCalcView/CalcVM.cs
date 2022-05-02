@@ -275,7 +275,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
                     Answer = calculator.Calculate(CalcExpression);
                     CurrentValue = CurrentCalcMath.GetNullSymbol();
 
-                    ExpressionsHistory.Add(CalcExpression);
+                    ExpressionsHistory.Insert(0, $"{CalcExpression} = {Answer}");
                 }
                 catch (Exception error) // TODO: define own CalculateException type
                 {

@@ -249,7 +249,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
             {
                 CalcExpression += CurrentValue;
 
-                ICalc calcMath = Activator.CreateInstance(CurrentSelectedCalcVM.CalcMathType) as ICalc;
+                ICalc calcMath = Activator.CreateInstance(CurrentSelectedCalc.CalcMathType) as ICalc;
                 Calculator calculator = new Calculator(calcMath);
 
                 try

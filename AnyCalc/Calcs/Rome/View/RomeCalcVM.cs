@@ -16,10 +16,6 @@ namespace AnyCalc.Calcs.Rome.View
         // Fields
 
         // Properties
-        public string CalcName => "Rome";
-        public Type CalcViewType => typeof(RomeCalcView);
-        public Type CalcMathType => typeof(RomeCalc);
-
         public ICommand InputSymbolCommand { get; set; }
 
         // ctors

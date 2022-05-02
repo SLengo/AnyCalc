@@ -10,10 +10,6 @@ namespace AnyCalc.Common.Views.BaseCalcView
 {
     public interface ICalcVM
     {
-        string CalcName { get; }
-        Type CalcViewType { get; }
-        Type CalcMathType { get; }
-
         ICommand InputSymbolCommand { get; set; }
 
         bool IsInputSymbolValid(string symbol);

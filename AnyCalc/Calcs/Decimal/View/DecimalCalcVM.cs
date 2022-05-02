@@ -18,11 +18,6 @@ namespace AnyCalc.Calcs.Decimal.View
         // Fields
 
         // Properties
-        public string CalcName => "Decimal";
-        public Type CalcViewType => typeof(DecimalCalcView);
-        public Type CalcMathType => typeof(DecimalCalc);
-
-
         private ICommand inputSymbolCommand { get; set; }
         public ICommand InputSymbolCommand
         {

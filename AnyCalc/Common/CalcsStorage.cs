@@ -1,4 +1,5 @@
-﻿using AnyCalc.Common.Views.BaseCalcView;
+﻿using AnyCalc.Common.CalcMath;
+using AnyCalc.Common.Views.BaseCalcView;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,33 +34,33 @@ namespace AnyCalc.Common
         }
 
         // Fields
-        private static ConcurrentDictionary<Type, ICalcVM> _registred_calcs { get; set; }
+        private static ConcurrentDictionary<Type, ICalcModel> _registred_calcs { get; set; }
 
         // Properties
 
         // ctors
         public CalcsStorage()
         {
-            _registred_calcs = new ConcurrentDictionary<Type, ICalcVM>();
+            _registred_calcs = new ConcurrentDictionary<Type, ICalcModel>();
         }
 
         // Methods
         public void InitAllCalcs()
         {
-            var allCalcs = Assembly.GetExecutingAssembly().ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(ICalcVM)));
+            var allCalcs = Assembly.GetExecutingAssembly().ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(ICalcModel)));
             foreach (var calc in allCalcs)
             {
-                ICalcVM calcToRegister = Activator.CreateInstance(calc) as ICalcVM;
+                ICalcModel calcToRegister = Activator.CreateInstance(calc) as ICalcModel;
                 _registred_calcs.TryAdd(calcToRegister.CalcMathType, calcToRegister);
             }
         }
 
-        public IEnumerable<ICalcVM> GetAllRegistredCalcs()
+        public IEnumerable<ICalcModel> GetAllRegistredCalcs()
         {
             return _registred_calcs.Values;
         }
 
-        public ICalcVM GetCalcVMViewByType(Type calcType)
+        public ICalcModel GetCalcModelViewByType(Type calcType)
         {
             if (_registred_calcs.ContainsKey(calcType))
             {

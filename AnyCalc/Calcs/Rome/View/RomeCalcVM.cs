@@ -21,9 +21,9 @@ namespace AnyCalc.Calcs.Rome.View
         // ctors
 
         // Methods
-        public bool IsInputSymbolValid(string symbol)
+        public bool IsInputSymbolIsNumber(string symbol)
         {
-            throw new NotImplementedException();
+            return RomeCalc.SingleRomeToNumResolver.ContainsKey(char.ToUpper(symbol[0]));
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using AnyCalc.Common.Views;
 using AnyCalc.Common.Views.BaseCalcView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AnyCalc.Calcs.Decimal.View
@@ -32,7 +27,7 @@ namespace AnyCalc.Calcs.Decimal.View
         // ctors
 
         // Methods
-        public bool IsInputSymbolValid(string symbol)
+        public bool IsInputSymbolIsNumber(string symbol)
         {
             return IsDigitReg.IsMatch(symbol);
         }

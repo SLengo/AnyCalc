@@ -7,10 +7,38 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
-        <TextBlock Text="Oops... Not implemented yet..."
-                   FontSize="40"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   />
+        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Content="I" Command="{Binding InputSymbolCommand}" CommandParameter="I" />
+            <Button Content="V" Command="{Binding InputSymbolCommand}" CommandParameter="V" Grid.Column="1" />
+            <Button Content="X" Command="{Binding InputSymbolCommand}" CommandParameter="X" Grid.Column="2" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Content="L" Command="{Binding InputSymbolCommand}" CommandParameter="L" />
+            <Button Content="C" Command="{Binding InputSymbolCommand}" CommandParameter="C" Grid.Column="1" />
+            <Button Content="D" Command="{Binding InputSymbolCommand}" CommandParameter="D" Grid.Column="2" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Button Content="M" Command="{Binding InputSymbolCommand}" CommandParameter="M" />
+        </Grid>
+
     </Grid>
 </UserControl>

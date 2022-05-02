@@ -12,6 +12,6 @@ namespace AnyCalc.Common.Views.BaseCalcView
     {
         ICommand InputSymbolCommand { get; set; }
 
-        bool IsInputSymbolValid(string symbol);
+        bool IsInputSymbolIsNumber(string symbol);
     }
 }

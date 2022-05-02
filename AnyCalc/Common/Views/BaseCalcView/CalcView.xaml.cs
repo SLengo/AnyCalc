@@ -1,17 +1,7 @@
-﻿using AnyCalc.Common.CalcMath;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AnyCalc.Common.Views.BaseCalcView
 {
@@ -81,11 +71,11 @@ namespace AnyCalc.Common.Views.BaseCalcView
                 calcView.ViewModel.InputSymbolCommand = ViewModel.InputSymbolCommand;
 
                 _initialized_calcs_views[selectedCalc] = calcView;
-                ViewModel.CurrentSelectedCalcVM = _initialized_calcs_views[selectedCalc].ViewModel;
 
                 SelectedCalcView.Children.Add(_initialized_calcs_views[selectedCalc].GetView());
             }
 
+            ViewModel.CurrentSelectedCalcVM = _initialized_calcs_views[selectedCalc].ViewModel;
             _initialized_calcs_views[selectedCalc].GetView().Visibility = Visibility.Visible;
         }
     }

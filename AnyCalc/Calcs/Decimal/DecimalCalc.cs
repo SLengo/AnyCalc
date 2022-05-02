@@ -1,15 +1,12 @@
 ﻿using AnyCalc.Common.CalcMath;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnyCalc.Calcs.Decimal
 {
     public class DecimalCalc : ICalc
     {
         // Consts & Configs
+        private const string DecimalNull = "0";
 
         // Fields
 
@@ -20,27 +17,27 @@ namespace AnyCalc.Calcs.Decimal
         // Methods
         public string Add(string left, string right)
         {
-            return ResultToString(double.Parse(left) + double.Parse(right));
+            return DoubleToString(double.Parse(left) + double.Parse(right));
         }
 
         public string Devide(string left, string right)
         {
-            if (right == "0")
+            if (right == DecimalNull)
             {
                 throw new Exception("Devision by zero!");
             }
 
-            return ResultToString(double.Parse(left) / double.Parse(right));
+            return DoubleToString(double.Parse(left) / double.Parse(right));
         }
 
         public string Multiple(string left, string right)
         {
-            return ResultToString(double.Parse(left) * double.Parse(right));
+            return DoubleToString(double.Parse(left) * double.Parse(right));
         }
 
         public string Substruct(string left, string right)
         {
-            return ResultToString(double.Parse(left) - double.Parse(right));
+            return DoubleToString(double.Parse(left) - double.Parse(right));
         }
 
         public double ConvertToNum(string input)
@@ -48,14 +45,21 @@ namespace AnyCalc.Calcs.Decimal
             return double.Parse(input);
         }
 
-        private string ResultToString(double result)
+        private string DoubleToString(double result)
         {
             if (result < 0)
             {
-                return $"({Convert.ToString(result)})";
+                return $"({ConvertToNotation(result)})";
             }
 
-            return Convert.ToString(result);
+            return ConvertToNotation(result);
+        }
+
+        public string GetNullSymbol() => DecimalNull;
+
+        public string ConvertToNotation(double input)
+        {
+            return Convert.ToString(input);
         }
     }
 }

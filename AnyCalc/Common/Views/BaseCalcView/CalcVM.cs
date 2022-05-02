@@ -1,4 +1,5 @@
 ﻿using AnyCalc.Calcs.Decimal;
+using AnyCalc.Calcs.Rome;
 using AnyCalc.Common.CalcMath;
 using AnyCalc.Common.Views.BaseCalcView.Models;
 using System;
@@ -14,8 +15,6 @@ namespace AnyCalc.Common.Views.BaseCalcView
     public class CalcVM : BaseNotified
     {
         // Consts & Configs
-        private const string ClearCurrentValue = "0";
-
         private const string OpenBracket = "(";
         private const string CloseBracket = ")";
 
@@ -40,7 +39,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
             set
             {
                 currentSelectedCalc = value;
-                SelectedCalcChanged?.Invoke(currentSelectedCalc.CalcMathType);
+                CurrentSelectedCalcChanged();
                 OnPropertyChanged(nameof(CurrentSelectedCalc));
             }
         }
@@ -57,7 +56,9 @@ namespace AnyCalc.Common.Views.BaseCalcView
         }
         public Action<Type> SelectedCalcChanged;
 
-        private string currentValue { get; set; } = ClearCurrentValue;
+        private ICalc CurrentCalcMath { get; set; }
+
+        private string currentValue { get; set; }
         public string CurrentValue
         {
             get => currentValue;
@@ -87,6 +88,17 @@ namespace AnyCalc.Common.Views.BaseCalcView
             {
                 answer = value;
                 OnPropertyChanged(nameof(Answer));
+            }
+        }
+
+        private ObservableCollection<string> expressionsHistory { get; set; }
+        public ObservableCollection<string> ExpressionsHistory
+        {
+            get => expressionsHistory;
+            set
+            {
+                expressionsHistory = value;
+                OnPropertyChanged(nameof(ExpressionsHistory));
             }
         }
 
@@ -164,6 +176,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
         public CalcVM()
         {
             AvailableCalcs = new ObservableCollection<CalcAvailableItem>();
+            ExpressionsHistory = new ObservableCollection<string>();
         }
 
         // Methods
@@ -183,15 +196,22 @@ namespace AnyCalc.Common.Views.BaseCalcView
             CurrentSelectedCalc = AvailableCalcs.FirstOrDefault();
         }
 
+        private void CurrentSelectedCalcChanged()
+        {
+            SelectedCalcChanged?.Invoke(currentSelectedCalc.CalcMathType); // invoke UI changes
+            CurrentCalcMath = CalcsStorage.Instance.GetCalcModelViewByType(currentSelectedCalc.CalcMathType).GetCalc(); // change math
+            ClearMethod(); // clear current values
+        }
+
         private void InputSymbolMethod(string symbol)
         {
             if (!string.IsNullOrEmpty(symbol))
             {
-                bool isDigit = CurrentSelectedCalcVM.IsInputSymbolValid(symbol);
+                bool isDigit = CurrentSelectedCalcVM.IsInputSymbolIsNumber(symbol);
 
                 if (isDigit)
                 {
-                    if (CurrentValue == ClearCurrentValue)
+                    if (CurrentValue == CurrentCalcMath.GetNullSymbol())
                     {
                         CurrentValue = string.Empty;
                     }
@@ -200,7 +220,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
                 else
                 {
                     CalcExpression += $"{CurrentValue}{symbol}";
-                    CurrentValue = ClearCurrentValue;
+                    CurrentValue = CurrentCalcMath.GetNullSymbol();
                 }
             }
         }
@@ -212,21 +232,21 @@ namespace AnyCalc.Common.Views.BaseCalcView
                 CurrentValue = CurrentValue.Substring(0, CurrentValue.Length - 1);
                 if (string.IsNullOrEmpty(CurrentValue))
                 {
-                    CurrentValue = ClearCurrentValue;
+                    CurrentValue = CurrentCalcMath.GetNullSymbol();
                 }
             }
         }
 
         private void ClearMethod()
         {
-            CurrentValue = ClearCurrentValue;
+            CurrentValue = CurrentCalcMath.GetNullSymbol();
             CalcExpression = string.Empty;
             Answer = string.Empty;
         }
 
         private void PlusMinusMethod()
         {
-            if (!string.IsNullOrEmpty(CurrentValue) && CurrentValue != ClearCurrentValue)
+            if (!string.IsNullOrEmpty(CurrentValue) && CurrentValue != CurrentCalcMath.GetNullSymbol())
             {
                 if (CurrentValue.StartsWith(OpenBracket))
                 {
@@ -248,14 +268,14 @@ namespace AnyCalc.Common.Views.BaseCalcView
             else
             {
                 CalcExpression += CurrentValue;
-
-                ICalc calcMath = CalcsStorage.Instance.GetCalcModelViewByType(CurrentSelectedCalc.CalcMathType).GetCalc();
-                Calculator calculator = new Calculator(calcMath);
+                Calculator calculator = new Calculator(CurrentCalcMath);
 
                 try
                 {
                     Answer = calculator.Calculate(CalcExpression);
-                    CurrentValue = ClearCurrentValue;
+                    CurrentValue = CurrentCalcMath.GetNullSymbol();
+
+                    ExpressionsHistory.Add(CalcExpression);
                 }
                 catch (Exception error) // TODO: define own CalculateException type
                 {

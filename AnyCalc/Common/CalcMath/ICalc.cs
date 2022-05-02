@@ -13,5 +13,8 @@ namespace AnyCalc.Common.CalcMath
         string Multiple(string left, string right);
         string Devide(string left, string right);
         double ConvertToNum(string input);
+        string ConvertToNotation(double input);
+
+        string GetNullSymbol();
     }
 }

@@ -69,15 +69,5 @@ namespace AnyCalc.Common
 
             return null;
         }
-
-        public Type GetCalcViewTypeByType(Type calcType)
-        {
-            if (_registred_calcs.ContainsKey(calcType))
-            {
-                return _registred_calcs[calcType].CalcViewType;
-            }
-            
-            return null;
-        }
     }
 }

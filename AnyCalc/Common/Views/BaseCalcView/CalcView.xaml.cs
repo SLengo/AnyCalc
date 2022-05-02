@@ -77,8 +77,7 @@ namespace AnyCalc.Common.Views.BaseCalcView
 
             if (!_initialized_calcs_views.ContainsKey(selectedCalc))
             {
-                Type calcViewToCreate = CalcsStorage.Instance.GetCalcViewTypeByType(selectedCalc);
-                ICalcView calcView = Activator.CreateInstance(calcViewToCreate) as ICalcView;
+                ICalcView calcView = CalcsStorage.Instance.GetCalcModelViewByType(selectedCalc).GetView();
                 calcView.ViewModel.InputSymbolCommand = ViewModel.InputSymbolCommand;
 
                 _initialized_calcs_views[selectedCalc] = calcView;

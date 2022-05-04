@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
 
 namespace AnyCalc.Calcs.Rome
@@ -12,7 +11,6 @@ namespace AnyCalc.Calcs.Rome
     {
         // Consts & Configs
         private const string RomeNull = "N";
-        private const int MaxRomeNum = 3999;
 
         public static readonly Dictionary<char, double> SingleRomeToNumResolver
             = new Dictionary<char, double>
@@ -26,23 +24,26 @@ namespace AnyCalc.Calcs.Rome
                 ['M'] = 1000,
             };
 
-        public static readonly Dictionary<double, char> NumToRomeResolver
-            = new Dictionary<double, char>
-            {
-                [1] = 'I',
-                [5] = 'V',
-                [10] = 'X',
-                [50] = 'L',
-                [100] = 'C',
-                [500] = 'D',
-                [1000] = 'M',
-            };
+        public static readonly Dictionary<double, char> NumToRomeResolver = new Dictionary<double, char>();
 
         // Fields
 
         // Properties
+        public int MaxAbsRomeNum { get; private set; }
 
         // ctors
+        public RomeCalc()
+        {
+            if (!NumToRomeResolver.Any())
+            {
+                foreach (var item in SingleRomeToNumResolver)
+                {
+                    NumToRomeResolver[item.Value] = item.Key;
+                }
+            }
+
+            MaxAbsRomeNum = (int)(SingleRomeToNumResolver.Values.Max() * 3 + SingleRomeToNumResolver.Values.Max() - 1);
+        }
 
         // Methods
         public string Add(string left, string right)
@@ -132,12 +133,13 @@ namespace AnyCalc.Calcs.Rome
 
         public string ConvertToNotation(double input)
         {
-            if (Math.Abs((int)input) > MaxRomeNum)
+            if (Math.Abs((int)input) > MaxAbsRomeNum)
             {
                 throw new Exception("Too large to convert to rome number");
             }
 
-            if (input < 0)
+            bool isNegative = input < 0;
+            if (isNegative)
             {
                 input *= -1;
             }
@@ -149,6 +151,7 @@ namespace AnyCalc.Calcs.Rome
             }
             else
             {
+                // TODO: round decPart to "count of digits of MaxAbsRomeNum - 1" e.g. 0.5999 --> 0.599 if MaxAbsRomeNum == 3999
                 double decPart = int.Parse((input % 1)
                     .ToString()
                     .Replace($"0{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}", string.Empty));
@@ -156,7 +159,7 @@ namespace AnyCalc.Calcs.Rome
                 romeResult = $"{DoubleToRome(intPart)}.{DoubleToRome(decPart)}";
             }
 
-            return romeResult;
+            return isNegative ? $"-{romeResult}" : romeResult;
         }
 
         public string DoubleToRome(double input)
@@ -249,7 +252,7 @@ namespace AnyCalc.Calcs.Rome
         {
             if (result < 0)
             {
-                return $"(-{ConvertToNotation(result)})";
+                return $"({ConvertToNotation(result)})";
             }
 
             return ConvertToNotation(result);

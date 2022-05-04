@@ -1,10 +1,5 @@
 ﻿using AnyCalc.Common.Views;
 using AnyCalc.Common.Views.BaseCalcView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AnyCalc.Calcs.Rome.View
@@ -16,7 +11,16 @@ namespace AnyCalc.Calcs.Rome.View
         // Fields
 
         // Properties
-        public ICommand InputSymbolCommand { get; set; }
+        private ICommand inputSymbolCommand { get; set; }
+        public ICommand InputSymbolCommand
+        {
+            get => inputSymbolCommand;
+            set
+            {
+                inputSymbolCommand = value;
+                OnPropertyChanged(nameof(InputSymbolCommand));
+            }
+        }
 
         // ctors
 
